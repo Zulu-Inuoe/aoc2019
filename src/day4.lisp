@@ -7,17 +7,6 @@
 
 (in-package #:com.zulu.aoc2019.day4)
 
-(defun split-digits (n)
-  "Create a list of digits from the integer `n'"
-  (check-type n integer)
-  (let ((digits ()))
-    (loop
-      :for x := n :then mod
-      :until (zerop x)
-      :for (mod rem) := (multiple-value-list (truncate x 10))
-      :do (push rem digits))
-    digits))
-
 (defun adjacent-digits-same-p (digits)
   "Returns true if two adjacent digits are equal in `digits'
 
@@ -42,7 +31,7 @@
 
 (defun valid-number-p (n)
   "Returns true if `n' is a valid password number as per part1 rules."
-  (let ((digits (split-digits n)))
+  (let ((digits (util:split-digits n)))
     (and (= (list-length digits) 6)
          (adjacent-digits-same-p digits)
          (non-decreasing-p digits))))
@@ -86,7 +75,7 @@
 
 (defun valid-number-v2-p (n)
   "Returns true if `n' is a valid password number as per part2 rules."
-  (let ((digits (split-digits n)))
+  (let ((digits (util:split-digits n)))
     (and (= (list-length digits) 6)
          (adjacent-digits-same-v2-p digits)
          (non-decreasing-p digits))))
