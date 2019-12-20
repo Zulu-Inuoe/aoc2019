@@ -1829,3 +1829,31 @@
 
 (defun part1 (&optional (orbits *orbits*))
   (count-orbits (build-tree orbits)))
+
+(defun build-path (orbits obj)
+  (loop
+    :for curr := obj :then parent
+    :for parent := (rassoc-value orbits curr)
+    :for res := (list parent) :then (cons parent res)
+    :while (/= parent #36RCOM)
+    :finally (return res)))
+
+(defun skip-heads (a b)
+  "Skip elements from `a' and `b' while they are equal.
+ Returns as two values the remaining tail of `a' and `b'.
+ (skip-heads '(a b c e) '(a b f g h))
+ ;; =>
+ (c e), (f g h)
+"
+  (loop
+    :for x :on a
+    :for y :on b
+    :while (eql (car x) (car y))
+    :finally (return (values x y))))
+
+(defun part2 (&optional (orbits *orbits*) (you #36RYOU) (san #36RSAN))
+  (multiple-value-bind (a b) (skip-heads
+                              (find-path orbits you)
+                              (find-path orbits san))
+    (+ (length a) (length b))))
+
